@@ -7,5 +7,17 @@
 #include <iostream>
 #include <string>
 
-void checkUserAndPass(sql::Driver* driver, sql::Connection* con);
-void getConnection(std::string address, std::string user, std::string pass);
+struct loggedUser {
+	std::string user{};
+	bool passAuthenticated{};
+	int level{};
+	sql::Driver* driver;
+	sql::Connection* con;
+	sql::Statement* stmt;
+	sql::ResultSet* res;
+};
+
+int getLevel(sql::Connection* con, sql::Statement* stmt, sql::ResultSet* res, std::string user);
+std::string getUser(sql::Connection* con, sql::Statement* stmt, sql::ResultSet* res);
+bool getPass(sql::Connection* con, sql::Statement* stmt, sql::ResultSet* res);
+void getConnection(std::string address, std::string user, std::string pass, sql::Driver* driver, sql::Connection* con, sql::Statement* stmt, sql::ResultSet* res);
