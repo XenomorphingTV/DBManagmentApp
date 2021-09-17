@@ -9,62 +9,59 @@
 #include "bcrypt.h"
 #include "Clear.h"
 
-std::string getUser() {
+int getLevel(sql::Connection* con, std::string user) {
+	sql::Statement* stmt;
+	sql::ResultSet* res;
+	int level{};
+	con->setSchema("login");
+	stmt = con->createStatement();	
+	res = stmt->executeQuery("SELECT level FROM logins WHERE user=\"" + user + "\";");
+	res->next();
+	level = res->getInt("level");
+	delete stmt;
+	delete res;
+	return level;
+}
+
+std::string getUser(sql::Connection* con) {
+	sql::Statement* stmt;
+	sql::ResultSet* res;
 	std::string user{};
-	std::cout << "Username: ";
-	std::cin >> user;
-	clear_screen();
+	std::string returnUser{};
+	con->setSchema("login");
+
+	do{
+		std::cout << "Username: ";
+		std::cin >> user;
+		clear_screen();
+		stmt = con->createStatement();
+		res = stmt->executeQuery("SELECT user FROM login.logins WHERE user=\"" + user + "\";");
+		res->next();
+		returnUser = res->getString("user");
+		if (user != returnUser) std::cout << "Incorrect user";
+	} while (user != returnUser);
+	delete stmt;
+	delete res;
 	return user;
 }
 
-std::string getPass() {
-	std::string pass{};
-	std::cout << "Password: ";
-	std::cin >> pass;
-	clear_screen();
-	return pass;
-}
-
-void checkUserAndPass(sql::Driver* driver, sql::Connection* con) {
+bool getPass(sql::Connection* con, std::string user) {
 	sql::Statement* stmt;
 	sql::ResultSet* res;
-	std::string returnUser{};
+	std::string pass{};
 	std::string returnPassword{};
-	std::string user{ getUser() };
-	std::string pass{ getPass() };
 	con->setSchema("login");
-
-	stmt = con->createStatement();
-	res = stmt->executeQuery("SELECT * FROM logins WHERE user=\"" + user + "\";");
-	while (res->next()) {
-		returnUser = res->getString("user");
+	do{
+		std::cout << "Password: ";
+		std::cin >> pass;
+		clear_screen();
+		stmt = con->createStatement();
+		res = stmt->executeQuery("SELECT password FROM logins WHERE user=\"" + user + "\";");
+		res->next();
 		returnPassword = res->getString("password");
-	}
-
-	if ((returnUser == user) && (bcrypt::validatePassword(pass, returnPassword))) {
-		std::cout << "Logged in\n";
-	}
-	else std::cout << "Failed\n";
-
-
+		if (bcrypt::validatePassword(pass, returnPassword) != 1) std::cout << "Incorrect password";
+	} while (bcrypt::validatePassword(pass, returnPassword) != 1);
+	delete stmt;
+	delete res;
+	return 1;
 }
-
-void getConnection(std::string address, std::string user, std::string pass) {
-	try {
-		sql::Driver* driver;
-		sql::Connection* con;
-
-		driver = get_driver_instance();
-		con = driver->connect(address, user, pass);
-		checkUserAndPass(driver, con);
-		}
-	
-	catch(sql::SQLException& e){
-		std::cout << "# ERR: SQLException in " << __FILE__;
-		std::cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << '\n';
-		std::cout << "# ERR: " << e.what();
-		std::cout << " (MySQL error code: " << e.getErrorCode();
-		std::cout << ", SQLState: " << e.getSQLState() << " )" << '\n';
-	}
-}
-
