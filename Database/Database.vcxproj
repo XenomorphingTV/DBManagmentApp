@@ -147,6 +147,8 @@
     <ClCompile Include="blowfish.cpp" />
     <ClCompile Include="Clear.cpp" />
     <ClCompile Include="Database.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Tables.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bcrypt.h" />
@@ -154,6 +156,7 @@
     <ClInclude Include="Authentication.h" />
     <ClInclude Include="Clear.h" />
     <ClInclude Include="openbsd.h" />
+    <ClInclude Include="Tables.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
