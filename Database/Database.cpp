@@ -17,7 +17,6 @@ int main()
 	const std::string sqlPass = "stefan";
 	loggedUser loggedIn{};
 
-	//Initialise MySQL class
 	// Connect to MySQL
 	do {
 		try {
@@ -43,9 +42,9 @@ int main()
 				std::cout << ", SQLState: " << e.getSQLState() << " )" << '\n';
 			}
 		}
-	} while (loggedIn.passAuthenticated != 1);
+		
+	} while (loggedIn.passAuthenticated != 1); // Wait for the password to be authenticated before allowing us to continue
 
-	// Login
 	// Main menu
 
 

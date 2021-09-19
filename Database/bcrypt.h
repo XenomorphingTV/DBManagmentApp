@@ -1,6 +1,4 @@
-#ifndef BCRYPT_H
-#define BCRYPT_H
-
+#pragma once
 #include <string>
 
 namespace bcrypt
@@ -10,5 +8,3 @@ namespace bcrypt
     bool validatePassword(const std::string & password, const std::string & hash);
 
 }
-
-#endif // BCRYPT_H

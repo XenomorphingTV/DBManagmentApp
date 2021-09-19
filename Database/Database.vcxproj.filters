@@ -30,6 +30,12 @@
     <ClCompile Include="Clear.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bcrypt.h">
@@ -45,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Clear.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
